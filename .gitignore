@@ -1,0 +1,30 @@
+# --- Credenciais e Segredos ---
+# NUNCA envie este arquivo para o Git!
+fastagenda-credentials.json
+*.json
+
+# --- Ambiente Virtual Python ---
+# Ignora a pasta 'venv' inteira
+venv/
+.venv/
+env/
+*.env
+.env
+
+# --- Arquivos Compilados e Caches do Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# --- Bancos de Dados Locais ---
+*.sqlite3
+*.db
+
+# --- Arquivos de IDE e Sistema ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
