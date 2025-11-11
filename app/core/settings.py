@@ -1,0 +1,29 @@
+# Em app/core/settings.py
+import os
+from pydantic_settings import BaseSettings
+from dotenv import load_dotenv
+
+# --- ESTA É A CORREÇÃO ---
+
+# 1. Encontramos o caminho para o arquivo .env
+# Isso garante que ele funcione, não importa de onde você rode o script.
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+env_path = os.path.join(BASE_DIR, '.env')
+
+# 2. Carregamos o .env no ambiente do sistema (os.environ)
+# Agora, a biblioteca do Google encontrará a variável!
+load_dotenv(dotenv_path=env_path)
+
+# Agora a classe Settings vai ler as variáveis que o load_dotenv
+# acabou de colocar no ambiente.
+class Settings(BaseSettings):
+    PROJECT_ID: str
+    GOOGLE_APPLICATION_CREDENTIALS: str
+    CALENDAR_ID: str
+    
+    # Não precisamos mais do 'Config' para dizer o nome do arquivo,
+    # pois o 'load_dotenv' já fez o trabalho sujo.
+
+
+# Criamos a instância única que será usada em todo o app.
+settings = Settings()
