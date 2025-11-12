@@ -2,7 +2,7 @@
 from app.schemas import BotMessageIn, BotMessageOut
 from app.gateways import dialogflow_gateway
 from app.gateways import google_calendar_gateway # Já importamos o módulo
-from datetime import timedelta, datetime
+from datetime import timedelta
 from dateutil.parser import isoparse
 
 async def processar_mensagem(mensagem: BotMessageIn) -> BotMessageOut:
