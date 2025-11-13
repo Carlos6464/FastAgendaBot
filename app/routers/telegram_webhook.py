@@ -7,7 +7,6 @@ from app.core.settings import settings
 
 router = APIRouter()
 
-# URL base da API do Telegram para enviar respostas
 TELEGRAM_API_URL = f"https://api.telegram.org/bot{settings.TELEGRAM_TOKEN}/sendMessage"
 
 async def enviar_resposta_telegram(chat_id: int, text: str):
@@ -44,16 +43,13 @@ async def handle_telegram_webhook(request: Request):
 
         print(f"Mensagem recebida do Telegram (ChatID {chat_id}): {text}")
 
-        # 1. TRADUZ para o nosso formato interno (BotMessageIn)
         mensagem_entrada = BotMessageIn(
-            user_id=str(user_id), # O nosso serviço espera uma string
+            user_id=str(user_id), 
             text=text
         )
 
-        # 2. CHAMA O NOSSO CÉREBRO
         resposta_bot = await bot_service.processar_mensagem(mensagem_entrada)
 
-        # 3. ENVIA A RESPOSTA de volta ao Telegram
         await enviar_resposta_telegram(
             chat_id=chat_id,
             text=resposta_bot.response_text
@@ -65,5 +61,4 @@ async def handle_telegram_webhook(request: Request):
             await enviar_resposta_telegram(chat_id, "Desculpe, ocorreu um erro interno.")
             
     finally:
-        # 4. Responde 200 OK ao Telegram IMEDIATAMENTE.
         return {"status": "ok"}

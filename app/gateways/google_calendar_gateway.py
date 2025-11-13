@@ -26,17 +26,16 @@ def criar_evento_google_calendar(
         service = build('calendar', 'v3', credentials=creds)
         
         # 3. Monta o corpo (body) do evento
-        # Note que convertemos o datetime para o formato ISO 8601 que a API exige
         event = {
             'summary': titulo,
             'description': 'Evento agendado automaticamente pelo FastAgendaBot',
             'start': {
                 'dateTime': start_time.isoformat(),
-                'timeZone': 'America/Sao_Paulo', # Importante!
+                'timeZone': 'America/Sao_Paulo',
             },
             'end': {
                 'dateTime': end_time.isoformat(),
-                'timeZone': 'America/Sao_Paulo', # Importante!
+                'timeZone': 'America/Sao_Paulo',
             },
         }
 
@@ -78,15 +77,12 @@ def verificar_disponibilidade_agenda(
 
             print(f"Verificando disponibilidade de {time_min_iso} até {time_max_iso}")
 
-            # Chama a API para listar eventos nesse intervalo
-            # timeMin e timeMax são exclusivos (não incluem o limite)
-            # por isso é seguro verificar se existem eventos *entre* esses horários
             events_result = service.events().list(
                 calendarId=settings.CALENDAR_ID,
                 timeMin=time_min_iso,
                 timeMax=time_max_iso,
-                maxResults=1,  # Só precisamos saber se existe pelo menos 1
-                singleEvents=True # Garante que vemos eventos recorrentes
+                maxResults=1,
+                singleEvents=True
             ).execute()
             
             events = events_result.get('items', [])
@@ -100,5 +96,4 @@ def verificar_disponibilidade_agenda(
 
         except Exception as e:
             print(f"Erro ao VERIFICAR disponibilidade: {e}")
-            # Por segurança, se der erro na verificação, consideramos ocupado
             return False

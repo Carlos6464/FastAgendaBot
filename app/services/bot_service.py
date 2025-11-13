@@ -1,8 +1,8 @@
 # Em app/services/bot_service.py
 from app.schemas import BotMessageIn, BotMessageOut
 from app.gateways import dialogflow_gateway
-from app.gateways import google_calendar_gateway # Já importamos o módulo
-from datetime import timedelta
+from app.gateways import google_calendar_gateway
+from datetime import timedelta, datetime
 from dateutil.parser import isoparse
 
 async def processar_mensagem(mensagem: BotMessageIn) -> BotMessageOut:
@@ -47,8 +47,7 @@ async def processar_mensagem(mensagem: BotMessageIn) -> BotMessageOut:
             # 3. Definimos a duração (ex: 1 hora)
             end_time = start_time + timedelta(hours=1)
             
-            # --- 4. A NOVA LÓGICA DE VERIFICAÇÃO ---
-            
+            # 4. A LÓGICA DE VERIFICAÇÃO
             esta_livre = google_calendar_gateway.verificar_disponibilidade_agenda(
                 start_time=start_time,
                 end_time=end_time
@@ -65,7 +64,7 @@ async def processar_mensagem(mensagem: BotMessageIn) -> BotMessageOut:
                 if evento_criado:
                     link_evento = evento_criado.get('htmlLink')
                     data_formatada = start_time.strftime('%d/%m/%Y às %H:%M')
-                    texto_final = f"Agendamento confirmado! ✅\nHorário: {data_formatada}\n\nVocê pode ver seu evento aqui: {link_evento}"
+                    texto_final = f"Agendamento confirmado! ✅\nHorário: {data_formatada}\n\nPode ver seu evento aqui: {link_evento}"
                 else:
                     texto_final = "Consegui entender seu horário, mas falhei ao tentar agendar no sistema. Tente novamente mais tarde."
             else:

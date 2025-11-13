@@ -3,7 +3,6 @@ import os
 from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
 
-
 # Encontramos o caminho para o arquivo .env
 # Isso garante que ele funcione, não importa de onde você rode o script.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -21,9 +20,5 @@ class Settings(BaseSettings):
     CALENDAR_ID: str
     TELEGRAM_TOKEN: str
     
-    # Não precisamos mais do 'Config' para dizer o nome do arquivo,
-    # pois o 'load_dotenv' já fez o trabalho sujo.
-
-
 # Criamos a instância única que será usada em todo o app.
 settings = Settings()
